@@ -1,0 +1,13 @@
+body {
+    padding: 16px;
+    height: 90vh
+}
+
+#app {
+    height: 100%;
+}
+
+#control-container{
+    height: 50%;
+    width: 100%;
+}
