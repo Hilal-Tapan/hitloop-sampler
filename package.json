@@ -9,13 +9,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^5.0.8",
+    "vite": "^5.0.12",
     "vite-plugin-mkcert": "^1.17.1"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10",
     "@picocss/pico": "^1.5.10",
     "modern-normalize": "^2.0.0",
-    "recorder-js": "^1.0.7",
     "wavesurfer.js": "^7.5.3"
   }
 }

@@ -1,0 +1,9 @@
+Flask==2.2.3
+Flask_Cors==3.0.10
+jsonpickle==3.0.2
+librosa==0.10.1
+matplotlib==3.7.0
+numpy==1.23.5
+scikit_learn==1.4.0
+scipy==1.12.0
+soundfile==0.12.1

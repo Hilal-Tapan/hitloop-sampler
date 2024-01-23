@@ -1,4 +1,4 @@
-#Imports
+# Imports
 import numpy as np
 import librosa
 import soundfile as sf
@@ -19,10 +19,10 @@ import io
 import jsonpickle
 from mimetypes import guess_extension
 
-#create app
+# create app
 app = Flask(__name__)
 
-#FLask CORS
+# FLask CORS
 cors = CORS(app)
 loop = asyncio.get_event_loop()
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -32,13 +32,14 @@ sample_rate = 48000
 std_stride = 0.5
 noise_threshold = 0.2
 
-#Folder used for output samples
+# Folder used for output samples
 output_folder_1 = 'samples_3'
 
-#Folder where the example samples are stored
-samples_folder = 'Inputs\Samples'
+# Folder where the example samples are stored
+samples_folder = 'Inputs/Samples'
 
-def array_to_feature_1(input_array:np.array)->np.array:
+
+def array_to_feature_1(input_array: np.array) -> np.array:
     """Function to convert numpy array to feature 1
 
     Args:
@@ -46,17 +47,17 @@ def array_to_feature_1(input_array:np.array)->np.array:
 
     Returns:
         np.array: mel spectogram
-    """    
+    """
 
-    feat_1 = librosa.feature.melspectrogram(y=input_array, sr= sample_rate)
+    feat_1 = librosa.feature.melspectrogram(y=input_array, sr=sample_rate)
     feat_1 = librosa.power_to_db(feat_1).astype(np.float32)
 
     # # feat_1 = librosa.stft(y=input_array)
 
     return feat_1
 
-def array_to_feature_2(input_array:np.array)->np.array:
 
+def array_to_feature_2(input_array: np.array) -> np.array:
     """Function to convert numpy array to feature 2
 
     Args:
@@ -64,18 +65,19 @@ def array_to_feature_2(input_array:np.array)->np.array:
 
     Returns:
         np.array: mel spectogram
-    """    
+    """
 
     # # feat_2 = librosa.feature.chroma_cens(y=input_array, sr= sample_rate)
     # # feat_2 = librosa.power_to_db(feat_2).astype(np.float32)
 
-    feat_2 = librosa.feature.spectral_contrast(y=input_array, sr= sample_rate)
+    feat_2 = librosa.feature.spectral_contrast(y=input_array, sr=sample_rate)
 
     # feat_2 = librosa.feature.mfcc(y=input_array, sr= sample_rate)
 
     return feat_2
 
-def array_to_feature_3(input_array:np.array)->np.array:
+
+def array_to_feature_3(input_array: np.array) -> np.array:
     """Function to convert numpy array to feature 3
     Tried Spectral Bandwidth
 
@@ -84,38 +86,40 @@ def array_to_feature_3(input_array:np.array)->np.array:
 
     Returns:
         np.array: mel spectogram
-    """    
+    """
 
-    feat_3 = librosa.feature.spectral_bandwidth(y=input_array, sr= sample_rate)
+    feat_3 = librosa.feature.spectral_bandwidth(y=input_array, sr=sample_rate)
     # feat_3 = librosa.power_to_db(feat_3).astype(np.float32)
 
     return feat_3
+
 
 def calculate_window_length():
     """Function to calculate window length
 
     Returns:
         int: window length
-    """    
+    """
 
-    #Get all audio files
+    # Get all audio files
     audio_files = []
     for instrument_type in os.listdir(samples_folder):
         for file in os.listdir(os.path.join(samples_folder, instrument_type)):
             file_path = os.path.join(samples_folder, instrument_type, file)
-            y= librosa.load(file_path, sr = sample_rate, mono=True)[0]
+            y = librosa.load(file_path, sr=sample_rate, mono=True)[0]
             audio_files.append(y)
 
     # Calculate shortest audio length for window length 
     audio_len = [len(file) for file in audio_files]
     window_len = np.min(audio_len)
 
-    #Make sure sample is maximum of 1 second
+    # Make sure sample is maximum of 1 second
     window_len = min(window_len, sample_rate)
 
     return window_len
 
-def create_sample_info(samples_folder:str)->list:
+
+def create_sample_info(samples_folder: str) -> list:
     """Function for creating the info we need from each sample to detect the Samples
 
     Args:
@@ -124,19 +128,19 @@ def create_sample_info(samples_folder:str)->list:
 
     Returns:
         list: list with the following information: [length of the sample , Mel-spectogram pattern , chroma-cens pattern , Spectral-bandwidth pattern]
-    """    
+    """
 
-    #Get all audio files in sample folder
+    # Get all audio files in sample folder
     audio_files = []
 
     files_list = os.listdir(samples_folder)
 
     for file in files_list:
         file_path = os.path.join(samples_folder, file)
-        y= librosa.load(file_path, sr = sample_rate, mono=True)[0]
+        y = librosa.load(file_path, sr=sample_rate, mono=True)[0]
         audio_files.append(y)
 
-    #Create_list of all features
+    # Create_list of all features
     all_mel_spec = []
     all_chroma_cens = []
     all_spec_band = []
@@ -151,22 +155,21 @@ def create_sample_info(samples_folder:str)->list:
 
         chroma_cens = array_to_feature_2(file)
         all_chroma_cens.append(chroma_cens)
-        
+
         spec_band = array_to_feature_3(file)
         all_spec_band.append(spec_band)
 
-    #Calculate average for each feature and turn it into list
+    # Calculate average for each feature and turn it into list
     average_melspec = np.mean(all_mel_spec, axis=0)
     average_chromacens = np.mean(all_chroma_cens, axis=0)
     average_specband = np.mean(all_spec_band, axis=0)
 
-
-
-    sample_info_list = [window_len,average_melspec,average_chromacens,average_specband]
+    sample_info_list = [window_len, average_melspec, average_chromacens, average_specband]
 
     return sample_info_list
 
-def distance(window:np.array, compare_pattern:np.array):
+
+def distance(window: np.array, compare_pattern: np.array):
     """_summary_
 
     Args:
@@ -175,15 +178,14 @@ def distance(window:np.array, compare_pattern:np.array):
 
     Returns:
         cosine similairity of window and pattern
-    """    
+    """
 
     #
     A = window.flatten().reshape(1, -1)
     B = compare_pattern.flatten().reshape(1, -1)
 
-
-    #Cosine
-    distance = cosine_distances(A,B)
+    # Cosine
+    distance = cosine_distances(A, B)
 
     # # Euclidean
     # distance = euclidean_distances(A,B)
@@ -192,11 +194,12 @@ def distance(window:np.array, compare_pattern:np.array):
     # distance = pairwise_distances(A, B, metric='correlation')
 
     distance = distance[0][0]
-    
+
     # distance = random.uniform(0,1)
     return distance
 
-def sliding_window(input_array, compare_info:list, stride:float, threshold:float):
+
+def sliding_window(input_array, compare_info: list, stride: float, threshold: float):
     """
     Create a sliding window over a 2D numpy array.
 
@@ -215,26 +218,24 @@ def sliding_window(input_array, compare_info:list, stride:float, threshold:float
     compare_chromacens = compare_info[2]
     compare_specband = compare_info[3]
 
-
-    stride_step = int(stride*window_size)
+    stride_step = int(stride * window_size)
     windows = []
     i = 0
     n_times = 0
     while i + window_size <= len(input_array):
-        window = input_array[i:i+window_size]
+        window = input_array[i:i + window_size]
 
-        #Calculate how similair audio is to noise. If 1 it is noise Check if the highest noiselike window is over this threshold
+        # Calculate how similair audio is to noise. If 1 it is noise Check if the highest noiselike window is over this threshold
         noise_like = np.max(librosa.feature.spectral_flatness(y=window))
         max_db = np.max(librosa.amplitude_to_db(window))
         if noise_like < noise_threshold:
-        
+
             # calculate similairities
             mel_spec = array_to_feature_1(window)
             db = librosa.power_to_db(mel_spec)
             max_db = int(np.max(db))
             print(max_db)
             mel_cosine = distance(mel_spec, compare_melspec)
-
 
             chroma_cens = array_to_feature_2(window)
             chroma_cosine = distance(chroma_cens, compare_chromacens)
@@ -245,9 +246,9 @@ def sliding_window(input_array, compare_info:list, stride:float, threshold:float
             combined_similairity = mel_cosine + chroma_cosine + specband_cosine
 
             if combined_similairity < threshold and max_db > 8:
-                    i += window_size
-                    n_times += 1
-                    windows.append(window)
+                i += window_size
+                n_times += 1
+                windows.append(window)
             else:
                 i += stride_step
                 n_times += 1
@@ -256,9 +257,9 @@ def sliding_window(input_array, compare_info:list, stride:float, threshold:float
             i += stride_step
             n_times += 1
 
-
     print(f'Used {n_times} windows to find {len(windows)} patterns')
     return windows
+
 
 def create_pattern_and_types():
     sample_patterns = []
@@ -274,15 +275,16 @@ def create_pattern_and_types():
 
     return sample_patterns, sample_types
 
+
 async def extract_samples_from_wav(wav_blob, output_samples_path):
-    #Load the temp file as a wave file so it can be used to extract samples
+    # Load the temp file as a wave file so it can be used to extract samples
     audio_file, _ = librosa.load('temp.wav', sr=sample_rate, mono=True)
 
     # Define std_stride and threshold based on your requirements
     std_stride = 0.5
     threshold = 2
 
-    #Remove the temp file
+    # Remove the temp file
     # os.remove('temp.wav')
 
     # Assuming create_pattern_and_types() is defined elsewhere
@@ -318,7 +320,7 @@ async def extract_samples_from_wav(wav_blob, output_samples_path):
                     sf.write(out_path, sample_window, sample_rate)
 
 
-#Create endpoint for creating custom samples
+# Create endpoint for creating custom samples
 @app.route('/upload', methods=['POST'])
 @cross_origin()
 def create_custom_samples():
@@ -326,17 +328,19 @@ def create_custom_samples():
 
     output_path = os.path.join(output_folder_1)
 
+    print(request.files)
+
     if 'file' in request.files:
         file = request.files['file']
         extname = guess_extension(file.content_type)
         print(type(extname))
         file.save('temp.wav')
         loop.run_until_complete(extract_samples_from_wav(file, output_path))
-        #Send back the samples
+        # Send back the samples
         for file in os.listdir(output_path):
             custom_samples.append(file)
 
         return jsonpickle.encode(custom_samples)
-        
-if __name__ == '__main__':   
+
+if __name__ == '__main__':
     app.run(debug=True, workers=4)

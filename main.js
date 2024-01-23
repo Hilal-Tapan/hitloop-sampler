@@ -3,12 +3,83 @@ import '@picocss/pico'
 import './style.css'
 import WaveSurfer from 'wavesurfer.js'
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js'
-import mediaRecorder from 'wavesurfer.js/src/webaudio/recorder.js'
+import {FFmpeg} from "@ffmpeg/ffmpeg";
 
 let wavesurfer, record
 let scrollingWaveform = true
 
-const createWaveSurfer = (stream) => {
+const createWaveSurfer = async () => {
+    async function convertBlob(blob) {
+        let audioBuffer = await blob.arrayBuffer();
+        let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let audioBufferSource = audioCtx.createBufferSource();
+
+        // Decode the audio data
+        let decodedBuffer = await audioCtx.decodeAudioData(audioBuffer);
+
+        // Interleave the channels
+        let interleavedData = new Float32Array(decodedBuffer.length * decodedBuffer.numberOfChannels);
+        let offset = 0;
+
+        for (let i = 0; i < decodedBuffer.numberOfChannels; i++) {
+            let channelData = decodedBuffer.getChannelData(i);
+
+            for (let j = 0; j < decodedBuffer.length; j++) {
+                interleavedData[offset] = channelData[j];
+                offset++;
+            }
+        }
+
+        // Create a new AudioBuffer with interleaved data
+        let interleavedBuffer = audioCtx.createBuffer(decodedBuffer.numberOfChannels, decodedBuffer.length, audioCtx.sampleRate);
+
+        for (let i = 0; i < decodedBuffer.numberOfChannels; i++) {
+            interleavedBuffer.copyToChannel(interleavedData.subarray(i * decodedBuffer.length, (i + 1) * decodedBuffer.length), i);
+        }
+
+        // Create a new Blob from the interleaved AudioBuffer
+        let blobWithWavHeader = await audioCtx.createWAVBlob(interleavedBuffer);
+
+        return blobWithWavHeader;
+    }
+
+// Extend the AudioContext prototype to create a WAV Blob
+    AudioContext.prototype.createWAVBlob = function (audioBuffer) {
+        return new Promise((resolve) => {
+            const audioData = audioBuffer.getChannelData(0);
+            const buffer = new ArrayBuffer(44 + audioData.length * 2);
+            const view = new DataView(buffer);
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 32 + audioData.length * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, this.sampleRate, true);
+            view.setUint32(28, this.sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, audioData.length * 2, true);
+
+            // Write the PCM audio data
+            for (let i = 0; i < audioData.length; i++) {
+                view.setInt16(44 + i * 2, audioData[i] * 32767, true);
+            }
+
+            resolve(new Blob([buffer], { type: 'audio/wav' }));
+
+            function writeString(view, offset, string) {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            }
+        });
+    };
+
+
     // Create an instance of WaveSurfer
     if (wavesurfer) {
         wavesurfer.destroy()
@@ -20,22 +91,18 @@ const createWaveSurfer = (stream) => {
     })
 
     // Initialize the Record plugin
-    let chunks = []
-    let record = new MediaRecorder(stream);
-    record.ondataavailable = (e) => {
-        chunks.push(e.data);
-    }
+    record = wavesurfer.registerPlugin(RecordPlugin.create({
+        scrollingWaveform,
+        renderRecordedAudio: false,
+        mimeType: 'audio/webm;codecs=pcm'
+    }))
 
     // Render recorded audio
-    record.onstop = event => {
-        console.log('Recording stopped: ', event);
-        const container = document.querySelector('#recordings')
-        let blob = new Blob(chunks, {type: record.mimeType});
-        chunks = [];
-        const recordedUrl = URL.createObjectURL(blob)
+    record.on('record-end', async (blob) => {
+        console.log(blob);
 
-        let formData = new FormData();
-        formData.append('file', blob);
+        const container = document.querySelector('#recordings')
+        const recordedUrl = URL.createObjectURL(blob)
 
         // Create wavesurfer from the recorded audio
         const wavesurfer = WaveSurfer.create({
@@ -55,13 +122,15 @@ const createWaveSurfer = (stream) => {
         // Download link
         const link = container.appendChild(document.createElement('button'))
         link.textContent = 'Send to Server'
-        link.addEventListener('click', async (e) => {
+
+        let data = new FormData();
+        data.append('file', await convertBlob(blob));
+
+        link.addEventListener('click', (e) => {
             // do post to example endpoint
-            alert('Sending to /upload endpoint! Not inmplemented yet.')
-            await fetch(`http://127.0.0.1:5000/upload`, {
+            fetch('http://127.0.0.1:5000/upload', {
                 method: 'POST',
-                body: formData,
-                headers: { 'Content-Type': 'audio/wav' },
+                body: data,
             })
                 .then((res) => res.json())
                 .then((res) => {
@@ -70,7 +139,7 @@ const createWaveSurfer = (stream) => {
                     link.download = res.name
                 })
         });
-    }
+    })
     pauseButton.style.display = 'none'
 }
 
@@ -115,7 +184,7 @@ recButton.onclick = () => {
 
     // get selected device
     const deviceId = micSelect.value
-    record.startRecording({ deviceId }).then(() => {
+    record.startRecording({deviceId}).then(() => {
         recButton.textContent = 'Stop'
         recButton.disabled = false
         pauseButton.style.display = 'inline'
