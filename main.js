@@ -3,11 +3,12 @@ import '@picocss/pico'
 import './style.css'
 import WaveSurfer from 'wavesurfer.js'
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js'
+import mediaRecorder from 'wavesurfer.js/src/webaudio/recorder.js'
 
 let wavesurfer, record
 let scrollingWaveform = true
 
-const createWaveSurfer = () => {
+const createWaveSurfer = (stream) => {
     // Create an instance of WaveSurfer
     if (wavesurfer) {
         wavesurfer.destroy()
@@ -19,11 +20,22 @@ const createWaveSurfer = () => {
     })
 
     // Initialize the Record plugin
-    record = wavesurfer.registerPlugin(RecordPlugin.create({ scrollingWaveform, renderRecordedAudio: false }))
+    let chunks = []
+    let record = new MediaRecorder(stream);
+    record.ondataavailable = (e) => {
+        chunks.push(e.data);
+    }
+
     // Render recorded audio
-    record.on('record-end', (blob) => {
+    record.onstop = event => {
+        console.log('Recording stopped: ', event);
         const container = document.querySelector('#recordings')
+        let blob = new Blob(chunks, {type: record.mimeType});
+        chunks = [];
         const recordedUrl = URL.createObjectURL(blob)
+
+        let formData = new FormData();
+        formData.append('file', blob);
 
         // Create wavesurfer from the recorded audio
         const wavesurfer = WaveSurfer.create({
@@ -43,12 +55,13 @@ const createWaveSurfer = () => {
         // Download link
         const link = container.appendChild(document.createElement('button'))
         link.textContent = 'Send to Server'
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', async (e) => {
             // do post to example endpoint
             alert('Sending to /upload endpoint! Not inmplemented yet.')
-            fetch('/upload', {
+            await fetch(`http://127.0.0.1:5000/upload`, {
                 method: 'POST',
-                body: blob,
+                body: formData,
+                headers: { 'Content-Type': 'audio/wav' },
             })
                 .then((res) => res.json())
                 .then((res) => {
@@ -57,7 +70,7 @@ const createWaveSurfer = () => {
                     link.download = res.name
                 })
         });
-    })
+    }
     pauseButton.style.display = 'none'
 }
 

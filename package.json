@@ -15,6 +15,7 @@
   "dependencies": {
     "@picocss/pico": "^1.5.10",
     "modern-normalize": "^2.0.0",
+    "recorder-js": "^1.0.7",
     "wavesurfer.js": "^7.5.3"
   }
 }
