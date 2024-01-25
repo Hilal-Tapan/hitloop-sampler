@@ -103,6 +103,9 @@ def calculate_window_length():
 
     # Get all audio files
     audio_files = []
+    base_folder = os.path.dirname(os.path.realpath(__file__))
+    samples_folder = os.path.join(base_folder, 'Inputs', 'Samples')
+
     for instrument_type in os.listdir(samples_folder):
         for file in os.listdir(os.path.join(samples_folder, instrument_type)):
             file_path = os.path.join(samples_folder, instrument_type, file)
@@ -264,7 +267,7 @@ def sliding_window(input_array, compare_info: list, stride: float, threshold: fl
 def create_pattern_and_types():
     sample_patterns = []
 
-    base_folder = os.getcwd()
+    base_folder = os.path.dirname(os.path.realpath(__file__))
     samples_folder = os.path.join(base_folder, 'Inputs', 'Samples')
     sample_types = os.listdir(samples_folder)
 
@@ -326,7 +329,16 @@ async def extract_samples_from_wav(wav_blob, output_samples_path):
 def create_custom_samples():
     custom_samples = []
 
-    output_path = os.path.join(output_folder_1)
+    base_path = os.path.dirname(os.path.realpath(__file__))
+
+    # del output folder if it exists
+    if os.path.exists(os.path.join(base_path, output_folder_1)):
+        for file in os.listdir(os.path.join(base_path, output_folder_1)):
+            os.remove(os.path.join(base_path, output_folder_1, file))
+        os.rmdir(os.path.join(base_path, output_folder_1))
+    os.makedirs(os.path.join(base_path, output_folder_1))
+
+    output_path = os.path.join(base_path, output_folder_1)
 
     print(request.files)
 
@@ -341,6 +353,7 @@ def create_custom_samples():
             custom_samples.append(file)
 
         return jsonpickle.encode(custom_samples)
+
 
 if __name__ == '__main__':
     app.run(debug=True, workers=4)
