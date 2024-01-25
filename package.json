@@ -13,9 +13,7 @@
     "vite-plugin-mkcert": "^1.17.1"
   },
   "dependencies": {
-    "@ffmpeg/ffmpeg": "^0.12.10",
     "@picocss/pico": "^1.5.10",
-    "modern-normalize": "^2.0.0",
     "wavesurfer.js": "^7.5.3"
   }
 }

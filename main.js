@@ -1,9 +1,7 @@
-import 'modern-normalize'
 import '@picocss/pico'
 import './style.css'
 import WaveSurfer from 'wavesurfer.js'
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js'
-import {FFmpeg} from "@ffmpeg/ffmpeg";
 
 let wavesurfer, record
 let scrollingWaveform = true
@@ -99,8 +97,6 @@ const createWaveSurfer = async () => {
 
     // Render recorded audio
     record.on('record-end', async (blob) => {
-        console.log(blob);
-
         const container = document.querySelector('#recordings')
         const recordedUrl = URL.createObjectURL(blob)
 
@@ -131,10 +127,10 @@ const createWaveSurfer = async () => {
             fetch('http://127.0.0.1:5000/upload', {
                 method: 'POST',
                 body: data,
+                mode: 'no-cors'
             })
                 .then((res) => res.json())
                 .then((res) => {
-                    console.log(res)
                     link.href = res.url
                     link.download = res.name
                 })
