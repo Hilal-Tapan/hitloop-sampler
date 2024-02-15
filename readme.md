@@ -1,6 +1,6 @@
-# Hitloop Sampler
+# Drama
 This project records and plays back audio. After recording, any recording can be sent to an endpoint of your choice. 
-In this case the endpoint is a POST /upload (Line 49 in main.js), but this can be changed to anything else. The recording itself is a WEBM audio file.
+In this case the endpoint is a POST /upload (Line 49 in entry-client.js), but this can be changed to anything else.
 
 ## Installation
 1. Clone the repository

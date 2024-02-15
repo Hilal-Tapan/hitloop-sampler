@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Hitloop Sampler</title>
+    <title>Drama</title>
 </head>
 <body>
 <div id="app" class="container">
-    <h1>Sampler</h1>
+    <nav>
+        <ul>
+            <li><strong>Transcriber</strong></li>
+        </ul>
+        <ul>
+            <li><a href="/" class="secondary">
+                Refresh
+            </a></li>
+        </ul>
+    </nav>
     <div id="control-container">
         <select id="mic-select" style="display: none">
             <option value="" hidden>Select mic</option>
@@ -19,7 +28,9 @@
     </div>
     <div id="waveform"></div>
     <div id="recordings" style="margin: 1rem 0"></div>
+    <span aria-busy="true" id="spinner" style="display: none;">Loading model...</span>
+    <pre id="output"></pre>
 </div>
-<script type="module" src="/main.js"></script>
+<script type="module" src="/src/entry-client.js"></script>
 </body>
 </html>
