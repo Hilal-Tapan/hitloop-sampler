@@ -96,7 +96,6 @@ const createWaveSurfer = async () => {
     record = wavesurfer.registerPlugin(RecordPlugin.create({
         scrollingWaveform,
         renderRecordedAudio: false,
-        mimeType: 'audio/webm;codecs=pcm'
     }))
 
     // Render recorded audio

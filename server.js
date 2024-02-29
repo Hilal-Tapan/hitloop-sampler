@@ -42,6 +42,9 @@ if (!isProduction) {
 }
 
 app.post('/transcribe', upload.single('file'), async (req, res) => {
+    try {
+
+
     const formData = new FormData()
     formData.append('file', new Blob([req.file.buffer], { type: 'audio/wav' }), 'audio.wav');
     formData.append('model', 'whisper-1')
@@ -55,6 +58,9 @@ app.post('/transcribe', upload.single('file'), async (req, res) => {
             }})
 
     res.status(200).json(response.data)
+    } catch (e) {
+        console.log(e)
+    }
 });
 
 // Serve HTML
