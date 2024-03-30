@@ -2,11 +2,12 @@
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Drama</title>
 </head>
 <body>
-<div id="app" class="container">
+    <div id="app" class="body-container">
     <div>
         <aside>
             <h1>Test het zelf ook uit!</h1>
@@ -27,11 +28,11 @@
                 <li>
                     Hoe werkt het?
                 </li>
-                
             </ol>
         </aside>
     </div>
-    <nav>
+    
+    <!-- <nav>
         <ul>
             <li><strong>Transcriber</strong></li>
         </ul>
@@ -40,8 +41,11 @@
                 Refresh
             </a></li>
         </ul>
-    </nav>
+    </nav> -->
+
+    <div id="app" class="container">
     <div id="control-container">
+
         <select id="mic-select" style="display: none">
             <option value="" hidden>Select mic</option>
         </select>
@@ -55,6 +59,8 @@
     <span aria-busy="true" id="spinner" style="display: none;">Loading model...</span>
     <pre id="output"></pre>
 </div>
+</div>
+
 <script type="module" src="/src/entry-client.js"></script>
 </body>
 </html>
