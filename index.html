@@ -5,33 +5,105 @@
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Drama</title>
+    <style>
+        .terms li {
+            display: none;
+        }
+
+        .terms li.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div id="app" class="body-container">
-    <div>
-        <aside>
-            <h1>Test het zelf ook uit!</h1>
-            <div class="line"></div>
-            <ol>
-                <li>
-                    Maak een opname
+        <div>
+            <aside>
+                <h1>Test het zelf ook uit!</h1>
+                <div class="line"></div>
+                <ol>
+                    <li class="category active" id="category-1">
+                    <h2>Maak een opname</h2>
+                    </li>
+                    <li class="category" id="category-2">
+                        <h2>Vergelijk de verschillende ASR modellen</h2>
+                    </li>
+                    <li class="category" id="category-3">
+                        <h2> Vergelijk de resultaten van anderen </h2>
+                    </li>
+                    <li class="category" id="category-4">
+                        <h2> Vergelijk de transcriptie uit de video’s </h2>
+                    </li>
+                    <li class="category" id="category-5">
+                        <h2> Hoe werkt het? </h2>
+                    </li>
+                </ol>
+            </aside>
+        </div>
+        
+        <div id="app" class="container">
+            <ul class="terms">
+                <li class="panel active">
+                    <div id="app" class="container">
+                        <div id="control-container">
+                            <h2>Maak een opname</h2>
+                            <h3>Ontdek of AI spraakherkenning jou ook discrimineert</h3>
+                            <select id="mic-select" style="display: none">
+                                <option value="" hidden>Select mic</option>
+                            </select>
+                            <div class="record">
+                            <button id="record">
+                                Record
+                            </button>
+                            <button id="pause">Pause</button>
+                        </div>
+                        </div>
+                        <div id="waveform"></div>
+                        <div id="recordings" style="margin: 1rem 0"></div>
+                        <span aria-busy="true" id="spinner" style="display: none;">Loading model...</span>
+                        <pre id="output"></pre>            
+                    </div>
                 </li>
-                <li>
-                    Vergelijk de verschillende ASR modellen
-                </li>
-                <li>
-                    Vergelijk de resultaten van anderen
-                </li>
-                <li>
-                    Vergelijk de transcriptie uit de video’s
-                </li>
-                <li>
-                    Hoe werkt het?
-                </li>
-            </ol>
-        </aside>
+                <li class="panel">Content for category 2</li>
+                <li class="panel">Content for category 3</li>
+                <li class="panel">Content for category 4</li>
+                <li class="panel">Content for category 5</li>
+            </ul>
+        </div>
     </div>
-    
+
+    <script type="module" src="/src/entry-client.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const asideItems = document.querySelectorAll(".category");
+            const contentSections = document.querySelectorAll(".terms > li");
+
+            asideItems.forEach((item, index) => {
+                item.addEventListener("click", function () {
+                    contentSections.forEach(section => {
+                        section.classList.remove("active");
+                    });
+
+                    contentSections[index].classList.add("active");
+
+                    if (window.innerWidth > 400) {
+                        asideItems.forEach(category => {
+                            category.classList.remove("active");
+                        });
+                        item.classList.add("active");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
     <!-- <nav>
         <ul>
             <li><strong>Transcriber</strong></li>
@@ -43,24 +115,4 @@
         </ul>
     </nav> -->
 
-    <div id="app" class="container">
-    <div id="control-container">
-
-        <select id="mic-select" style="display: none">
-            <option value="" hidden>Select mic</option>
-        </select>
-        <button id="record">
-            Record
-        </button>
-        <button id="pause">Pause</button>
-    </div>
-    <div id="waveform"></div>
-    <div id="recordings" style="margin: 1rem 0"></div>
-    <span aria-busy="true" id="spinner" style="display: none;">Loading model...</span>
-    <pre id="output"></pre>
-</div>
-</div>
-
-<script type="module" src="/src/entry-client.js"></script>
-</body>
-</html>
+  

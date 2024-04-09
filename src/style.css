@@ -1,6 +1,21 @@
+:root {
+    --background: #707070;
+    --button: black;
+    --aside: #989696;
+    --aside-title: #FFFFFF;
+    --accent-color: #CFF8B9;
+    --font-dark:#707070;
+    --font-light:#FFFFFF;
+    --line-color:#B2B2B2;
+
+    --font: Arial, Helvetica, sans-serif;
+}
+
+
 body {
-    /* padding: 16px; */
+    padding: 30px;
     height: 100vh;
+    background-color: var(--background);
 }
 
 .body-container {
@@ -14,7 +29,7 @@ body {
 
 button {
     border: none;
-    background-color: #707070;
+    background-color: var(--button);
     height: 55px;
 }
 
@@ -24,65 +39,80 @@ button:hover{
 }
 
 aside {
-    width: 35vw;
+    width: 33vw;
     height: 100%;
-    background-color: #E2DADA;
+    background-color: var(--aside);
     padding: 24px;
     position: relative;
+    border-radius: 20px;
+    /* top: 15%; */
 }
+
 
 aside h1 {
     font-size: 20px;
-    padding: 50px 0 30px 5px;
+    padding: 10px 0 30px 5px;
     margin: 0;
+    color: var(--aside-title);
 }
 
-/* aside::before {
-    content: ' ';
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: min(0px, calc((1040px - 110vw) / 2));
-    background: #E2DADA;
-    position: absolute;
-    z-index: 0;
-    overflow-x: visible;
-} */
-
+aside > ol {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80%;
+}
 
 aside > ol > li{
     position: relative;
     cursor: pointer;
-    padding: 0 0 30px 32px;
+    padding: 0 0 0 32px;
     counter-increment: item;
     color: #B2B2B2;
+
 }
 
-aside > ol > li:nth-of-type(1) {
+aside > ol > li > h2 {
+    font-size: 14px;
+    padding: 5px 8px;
+    margin: 0;
+    color: var(--font-light);
+}
+
+aside > ol > li.active h2 {
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    width: fit-content;
+    color: var(--font-dark);
+}
+
+aside > ol > li.active {
     color: #707070;
 }
 
-aside > ol > li:nth-of-type(1)::before{
-    background-color: #707070;
+aside > ol > li.active::before{
+    background-color: var(--font-light);
+    color: var(--font-dark);
 }
 
 aside > ol > li::before {
     position: absolute;
     content: counters(item, " ");
     left: -15px;
-    color: white;
+    color: var(--font-light);
     border-radius: 50%;
     width: 30px;
     height: 30px;
     background-color: #B2B2B2;
     text-align: center;
-    padding-top: 6px;
+    padding-top: 4px;
     font-size: 16px;
+    margin-top: 3px;
 }
 
 .line{
-    border-right: 2px dashed black;
-    height: 250px;
+    border-right: 2px solid var(--line-color);
+    height: 70%;
     opacity: 30%;
     z-index: 0;
     position: absolute;
@@ -96,21 +126,38 @@ aside > ol > li::before {
 } */
 
 #app h1 {
-    padding: 50px 0 0 0;
-    font-size: 30px
+    /* padding: 50px 0 0 0; */
+    font-size: 20px
 }
 
 #control-container{
-    /* height: 50%; */
     width: 100%;
     display: flex;
-    gap: 30px;
+    flex-direction: column;
+    padding-top: 22px;
+}
+
+#control-container h2, h3 {
+    color: var(--font-light);
+    text-align: center;
+}
+
+#control-container h2{
+    font-size: 20px;
+}
+
+#control-container h3{
+    font-size: 14px;
 }
 
 /* #control-container button {
     background-color: #707070;
     border: none;
 } */
+
+.record{
+    display: flex;
+}
 
 #recordings {
     display: flex;
@@ -122,4 +169,8 @@ aside > ol > li::before {
 
 #recordings div:nth-of-type(1){
     display: none;
+}
+
+#model-select{
+    color: var(--font-light);
 }

@@ -1,3 +1,5 @@
+
+
 import '@picocss/pico'
 import './style.css'
 import WaveSurfer from 'wavesurfer.js'
@@ -88,7 +90,7 @@ const createWaveSurfer = async () => {
     }
     wavesurfer = WaveSurfer.create({
         container: '#waveform',
-        waveColor: 'rgb(200, 0, 200)',
+        waveColor: 'rgb(207, 248, 185)',
         progressColor: 'rgb(100, 0, 100)',
     })
 
