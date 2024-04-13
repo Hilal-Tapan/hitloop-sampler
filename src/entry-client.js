@@ -137,7 +137,7 @@ const createWaveSurfer = async () => {
         // Upload link
         const link = container.appendChild(document.createElement('button'))
         link.id = 'uploadButton'
-        link.textContent = 'Send to Whisper'
+        link.textContent = 'Generate'
 
         let data = new FormData();
         let convertedBlob = await convertBlob(blob);
@@ -174,17 +174,17 @@ const createWaveSurfer = async () => {
     pauseButton.style.display = 'none'
 }
 
-const pauseButton = document.querySelector('#pause')
-pauseButton.onclick = () => {
-    if (record.isPaused()) {
-        record.resumeRecording()
-        pauseButton.textContent = 'Pause'
-        return
-    }
+// const pauseButton = document.querySelector('#pause')
+// pauseButton.onclick = () => {
+//     if (record.isPaused()) {
+//         record.resumeRecording()
+//         pauseButton.textContent = 'Pause'
+//         return
+//     }
 
-    record.pauseRecording()
-    pauseButton.textContent = 'Resume'
-}
+//     record.pauseRecording()
+//     pauseButton.textContent = 'Resume'
+// }
 
 const micSelect = document.querySelector('#mic-select')
 {
@@ -205,7 +205,8 @@ recButton.onclick = () => {
     if (record.isRecording()) {
         record.stopRecording()
         recButton.textContent = 'Record'
-        pauseButton.style.display = 'none'
+        // pauseButton.style.display = 'none'
+        // record button disabelen nadat ze op stop klikken, eventueel refresh knop voor als ze nieuwe opnamen willen.
         return
     }
 
@@ -218,7 +219,7 @@ recButton.onclick = () => {
     record.startRecording({deviceId}).then(() => {
         recButton.textContent = 'Stop'
         recButton.disabled = false
-        pauseButton.style.display = 'inline'
+        // pauseButton.style.display = 'inline'
     })
 }
 
