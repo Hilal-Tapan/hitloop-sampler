@@ -117,8 +117,8 @@ const createWaveSurfer = async () => {
         const button = container.appendChild(document.createElement('button'))
         button.textContent = 'Play'
         button.onclick = () => wavesurfer.playPause()
-        wavesurfer.on('pause', () => (button.textContent = 'Play'))
-        wavesurfer.on('play', () => (button.textContent = 'Pause'))
+        // wavesurfer.on('pause', () => (button.textContent = 'Play'))
+        // wavesurfer.on('play', () => (button.textContent = 'Pause'))
 
 
         const modelSelect = document.createElement('select');
@@ -171,7 +171,7 @@ const createWaveSurfer = async () => {
             document.getElementById("spinner").style.display = 'none';
         });
     })
-    pauseButton.style.display = 'none'
+    // pauseButton.style.display = 'none'
 }
 
 // const pauseButton = document.querySelector('#pause')
