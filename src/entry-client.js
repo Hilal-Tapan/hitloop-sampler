@@ -1,5 +1,3 @@
-
-
 import '@picocss/pico'
 import './style.css'
 import WaveSurfer from 'wavesurfer.js'
@@ -106,6 +104,7 @@ const createWaveSurfer = async () => {
         const recordedUrl = URL.createObjectURL(blob)
 
         // Create wavesurfer from the recorded audio
+        // container recordings div erover en dan absolute dan gaat die niet verplaatsen
         const wavesurfer = WaveSurfer.create({
             container,
             waveColor: 'rgb(200, 100, 0)',
@@ -114,9 +113,9 @@ const createWaveSurfer = async () => {
         })
 
         // Play button
-        const button = container.appendChild(document.createElement('button'))
-        button.textContent = 'Play'
-        button.onclick = () => wavesurfer.playPause()
+        // const button = container.appendChild(document.createElement('button'))
+        // button.textContent = 'Play'
+        // button.onclick = () => wavesurfer.playPause()
         // wavesurfer.on('pause', () => (button.textContent = 'Play'))
         // wavesurfer.on('play', () => (button.textContent = 'Pause'))
 
@@ -156,6 +155,7 @@ const createWaveSurfer = async () => {
                     mode: 'no-cors'
                 }).then(response => response.json())
                     .then(data => {
+                        wavesurfer.playPause()
                         document.getElementById("output").innerText += `Whisper-large: ${data.text} \n`
                     })
                     .catch((error) => {
@@ -165,6 +165,8 @@ const createWaveSurfer = async () => {
                 const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
                 const result = await transcriber(wavUrl);
                 console.log(result)
+                // wavesurfer.playpause  als ik de andere modellen ook wil laten afspelen en genereren
+                // wavesurfer.playPause()
                 document.getElementById("output").innerText += `Whisper-${model}: ${result.text} \n`
             }
 
@@ -198,6 +200,7 @@ const micSelect = document.querySelector('#mic-select')
         })
     })
 }
+
 // Record button
 const recButton = document.querySelector('#record')
 
