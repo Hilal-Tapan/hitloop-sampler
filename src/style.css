@@ -7,6 +7,7 @@
     --font-dark:#707070;
     --font-light:#FFFFFF;
     --line-color:#B2B2B2;
+    --titel-background: #4B4B4B;
 
     --font: Arial, Helvetica, sans-serif;
 }
@@ -57,13 +58,13 @@ button > img {
 
 #record {
     position: absolute;
-    bottom: 100px;
+    bottom: 20px;
     right: 32%;
 }
 
 .play-button {
     position: absolute;
-    bottom: 100px;
+    bottom: 20px;
     right: 23%;
 }
 
@@ -73,6 +74,13 @@ button > img {
     color: black;
 } */
 
+pre {
+    background: var(--titel-background);
+    color: var(--font-light);
+    font: var(--font);
+    text-align: center;
+    /* padding: 2px 0; */
+}
 
 
 aside {
@@ -263,6 +271,22 @@ aside > ol > li:nth-of-type(2).active::after, aside > ol > li:nth-of-type(4).act
 
 #control-container h2{
     font-size: 20px;
+    position: relative;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#control-container h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px; 
+    width: 35px;
+    height: 6px; 
+    border-radius: 5px;
+    background-color: var(--accent-color);
 }
 
 #control-container h3{
