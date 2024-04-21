@@ -74,14 +74,16 @@ button > img {
     color: black;
 } */
 
+
 pre {
     background: var(--titel-background);
     color: var(--font-light);
     font: var(--font);
     text-align: center;
-    /* padding: 2px 0; */
+    word-wrap: break-word;
+    max-width: 800px;
+    white-space: pre-wrap;
 }
-
 
 aside {
     width: 33vw;
