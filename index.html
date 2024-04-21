@@ -80,27 +80,47 @@
 
     <script type="module" src="/src/entry-client.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const asideItems = document.querySelectorAll(".category");
-            const contentSections = document.querySelectorAll(".terms > li");
+      document.addEventListener("DOMContentLoaded", function () {
+    // Selecteer alle categorie-items en term-secties
+    const asideItems = document.querySelectorAll(".category");
+    const contentSections = document.querySelectorAll(".terms > li");
 
-            asideItems.forEach((item, index) => {
-                item.addEventListener("click", function () {
-                    contentSections.forEach(section => {
-                        section.classList.remove("active");
-                    });
-
-                    contentSections[index].classList.add("active");
-
-                    if (window.innerWidth > 400) {
-                        asideItems.forEach(category => {
-                            category.classList.remove("active");
-                        });
-                        item.classList.add("active");
-                    }
-                });
+    // Itereer over alle categorie-items
+    asideItems.forEach((item, index) => {
+        // Voeg een klikgebeurtenis toe aan elk categorie-item
+        item.addEventListener("click", function () {
+            // Verwijder de "active" klasse van alle term-secties
+            contentSections.forEach(section => {
+                section.classList.remove("active");
             });
+
+            // Bepaal de doelindex op basis van het id van het geklikte item
+            let targetIndex;
+            if (item.id === "category-1" || item.id === "category-2") {
+                targetIndex = 0; // Eerste panel
+                // Verberg de model select voor category-1, toon het voor category-2
+                document.getElementById("model-select").style.display = item.id === "category-1" ? "none" : "block";
+            } else if (item.id === "category-3") {
+                targetIndex = 2; // Derde panel
+            } else if (item.id === "category-4") {
+                targetIndex = 3; // Vierde panel
+            } else if (item.id === "category-5") {
+                targetIndex = 4; // Vijfde panel
+            }
+
+            // Voeg de "active" klasse toe aan de term-sectie op basis van de doelindex
+            contentSections[targetIndex].classList.add("active");
+
+            // Controleer de schermgrootte en pas de "active" klasse toe op het geklikte categorie-item indien nodig
+            if (window.innerWidth > 400) {
+                asideItems.forEach(category => {
+                    category.classList.remove("active");
+                });
+                item.classList.add("active");
+            }
         });
+    });
+});
     </script>
 </body>
 </html>

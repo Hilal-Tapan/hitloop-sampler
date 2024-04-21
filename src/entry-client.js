@@ -136,7 +136,7 @@ const createWaveSurfer = async () => {
         // Upload link
         const link = container.appendChild(document.createElement('button'))
         link.id = 'uploadButton'
-        link.textContent = 'Generate'
+        link.textContent = 'Play'
 
         let data = new FormData();
         let convertedBlob = await convertBlob(blob);
