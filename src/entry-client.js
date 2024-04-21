@@ -136,7 +136,9 @@ const createWaveSurfer = async () => {
         // Upload link
         const link = container.appendChild(document.createElement('button'))
         link.id = 'uploadButton'
-        link.textContent = 'Play'
+        link.innerHTML = '<img src="images/play-button.svg" alt="Play Recording">';
+        link.classList.add('play-button');
+
 
         let data = new FormData();
         let convertedBlob = await convertBlob(blob);
@@ -207,7 +209,7 @@ const recButton = document.querySelector('#record')
 recButton.onclick = () => {
     if (record.isRecording()) {
         record.stopRecording()
-        recButton.textContent = 'Record'
+        // recButton.textContent = 'Record'
         // pauseButton.style.display = 'none'
         // record button disabelen nadat ze op stop klikken, eventueel refresh knop voor als ze nieuwe opnamen willen.
         return
@@ -220,7 +222,7 @@ recButton.onclick = () => {
     // get selected device
     const deviceId = micSelect.value
     record.startRecording({deviceId}).then(() => {
-        recButton.textContent = 'Stop'
+        recButton.innerHTML = '<img src="images/pause-button.svg" alt="Stop Recording">';
         recButton.disabled = false
         // pauseButton.style.display = 'inline'
     })

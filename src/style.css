@@ -16,6 +16,7 @@ body {
     padding: 30px;
     height: 100vh;
     background-color: var(--background);
+    overflow-x: hidden;
 }
 
 .body-container {
@@ -29,24 +30,50 @@ body {
 
 .sound-line{
     position: absolute;
-    top: 53.5%;
-    left: 0;
-    /* transform: translateY(-20%); */
-    width: 100%;
+    top: 40.9%;
+    left: -50px;
+    right: 0;
+    width: 150%;
     height: 3px;
     background-color: #CFF8B9;
 }
 
 button {
+    outline: none;
     border: none;
-    background-color: var(--button);
-    height: 55px;
+    background-color: transparent;
+    height: fit-content;
+    width: fit-content;
+    padding: 0;
 }
 
-button:hover{
+button > img {
+    width: 60px
+}
+
+*:focus {
+    outline: none !important;
+}
+
+#record {
+    position: absolute;
+    bottom: 100px;
+    right: 32%;
+}
+
+.play-button {
+    position: absolute;
+    bottom: 100px;
+    right: 23%;
+}
+
+
+/* button:hover{
     background-color: #B2B2B2;
     color: black;
-}
+} */
+
+
 
 aside {
     width: 33vw;
@@ -212,6 +239,14 @@ aside > ol > li:nth-of-type(2).active::after, aside > ol > li:nth-of-type(4).act
 #app h1 {
     /* padding: 50px 0 0 0; */
     font-size: 20px
+}
+
+.terms li {
+    display: none;
+}
+
+.terms li.active {
+    display: block;
 }
 
 #control-container{
