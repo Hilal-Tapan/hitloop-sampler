@@ -229,3 +229,164 @@ recButton.onclick = () => {
 }
 
 createWaveSurfer()
+
+
+// import '@picocss/pico';
+// import './style.css';
+// import WaveSurfer from 'wavesurfer.js';
+// import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js';
+// import { pipeline, env } from '@xenova/transformers';
+
+// let wavesurfer, record;
+// let scrollingWaveform = true;
+// env.allowLocalModels = false;
+// env.allowRemoteModels = true;
+
+// const createWaveSurfer = async () => {
+//     // Function to convert Blob
+//     async function convertBlob(blob) {
+//         // Implementation of the convertBlob function...
+//     }
+
+//     // Destroy existing WaveSurfer instance if any
+//     if (wavesurfer) {
+//         wavesurfer.destroy();
+//     }
+//     // Create new WaveSurfer instance
+//     wavesurfer = WaveSurfer.create({
+//         container: '#waveform',
+//         waveColor: 'rgb(207, 248, 185)',
+//         progressColor: 'rgb(100, 0, 100)',
+//     });
+
+//     // Register RecordPlugin
+//     record = wavesurfer.registerPlugin(RecordPlugin.create({
+//         scrollingWaveform,
+//         renderRecordedAudio: false,
+//     }));
+
+//     // Event listener for record-end event
+//     record.on('record-end', async (blob) => {
+//         const container = document.querySelector('#recordings');
+//         const recordedUrl = URL.createObjectURL(blob);
+
+//         const wavesurfer = WaveSurfer.create({
+//             container,
+//             waveColor: 'rgb(200, 100, 0)',
+//             progressColor: 'rgb(100, 50, 0)',
+//             url: recordedUrl,
+//         });
+
+//         // Dropdown select for model
+//         const modelSelect = document.createElement('select');
+//         modelSelect.id = 'model-select';
+//         modelSelect.name = 'model-select';
+//         modelSelect.innerHTML = `
+//             <option value="tiny">Whisper Tiny</option>
+//             <option value="base">Whisper Base</option>
+//             <option value="small">Whisper Small</option>
+//             <option value="medium">Whisper Medium (Slow!)</option>
+//             <option value="large" selected>Whisper Large</option>
+//         `;
+//         container.appendChild(modelSelect);
+
+//         // Button to play recording
+//         const link = container.appendChild(document.createElement('button'));
+//         link.id = 'uploadButton';
+//         link.innerHTML = '<img src="images/play-button.svg" alt="Play Recording">';
+//         link.classList.add('play-button');
+
+//         // Prepare data for transcription
+//         let data = new FormData();
+//         let convertedBlob = await convertBlob(blob);
+//         let wavUrl = URL.createObjectURL(convertedBlob);
+//         data.append('file', convertedBlob);
+
+//         // Event listener for transcription button click
+// // Event listener for transcription button click
+// link.addEventListener('click', async (e) => {
+//     const model = document.getElementById('model-select').value;
+//     document.getElementById("spinner").style.display = 'block';
+
+//     if (model === 'large') {
+//         fetch('/transcribe', {
+//             method: 'POST',
+//             body: data,
+//             mode: 'no-cors'
+//         }).then(response => response.json())
+//             .then(data => {
+//                 // Check if the selected model is Whisper-large
+//                 if (model === 'large') {
+//                     wavesurfer.playPause(); // Only play the audio if the selected model is Whisper-large
+//                 }
+//                 document.getElementById("output").innerText += `Whisper-large: ${data.text} \n`;
+//             })
+//             .catch((error) => {
+//                 console.error('Error:', error);
+//             });
+//     } else {
+//         const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
+//         const result = await transcriber(wavUrl);
+//         console.log(result);
+//         document.getElementById("output").innerText += `Whisper-${model}: ${result.text} \n`;
+//     }
+
+//     document.getElementById("spinner").style.display = 'none';
+// });
+
+//     });
+// };
+
+// // Select microphone dropdown population
+// const micSelect = document.querySelector('#mic-select');
+// RecordPlugin.getAvailableAudioDevices().then((devices) => {
+//     devices.forEach((device) => {
+//         const option = document.createElement('option');
+//         option.value = device.deviceId;
+//         option.text = device.label || device.deviceId;
+//         micSelect.appendChild(option);
+//     });
+// });
+
+// // Record button click handler
+// const recButton = document.querySelector('#record');
+// recButton.onclick = () => {
+//     if (record.isRecording()) {
+//         record.stopRecording();
+//         return;
+//     }
+//     recButton.disabled = true;
+//     const deviceId = micSelect.value;
+//     record.startRecording({ deviceId }).then(() => {
+//         recButton.innerHTML = '<img src="images/pause-button.svg" alt="Stop Recording">';
+//         recButton.disabled = false;
+//     });
+// };
+
+// // Initialize WaveSurfer
+// createWaveSurfer();
+
+// // Container for transcription buttons
+// const container = document.querySelector('#recordings');
+
+// // Function to add transcription button for each model
+// const addTranscriptionButton = (modelName) => {
+//     const button = document.createElement('button');
+//     button.innerText = `Transcribe with Whisper ${modelName}`;
+//     button.classList.add('transcription-button');
+//     button.addEventListener('click', async () => {
+//         document.getElementById("spinner").style.display = 'block';
+//         const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${modelName}`);
+//         const result = await transcriber(wavUrl);
+//         console.log(result);
+//         document.getElementById("output").innerText += `Whisper-${modelName}: ${result.text} \n`;
+//         document.getElementById("spinner").style.display = 'none';
+//     });
+//     container.appendChild(button);
+// };
+
+// // Add transcription buttons for each model
+// ['Tiny', 'Base', 'Small', 'Medium (Slow!)'].forEach(modelName => {
+//     addTranscriptionButton(modelName);
+// });
+
