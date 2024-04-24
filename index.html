@@ -40,8 +40,15 @@
                 <li class="panel active">
                     <div id="app" class="container">
                         <div id="control-container">
-                            <h2>Maak een opname</h2>
-                            <h3>Ontdek of AI spraakherkenning jou ook discrimineert</h3>
+                            <div id="cat-1">
+                                <h2>Maak een opname</h2>
+                                <h3>Ontdek of AI spraakherkenning jou ook discrimineert</h3>
+                            </div>
+                            <div id="cat-2">
+                                <h2>Vergelijk de resultaten van anderen</h2>
+                                <h3>Kom erachter of anderen hetzelfde probleem ervaren</h3>
+                            </div>
+
                             <select id="mic-select" style="display: none">
                                 <option value="" hidden>Select mic</option>
                             </select>
@@ -56,7 +63,8 @@
                         <div class="sound-line"></div>
                         <div id="recordings" style="margin: 1rem 0"></div>
                         <span aria-busy="true" id="spinner" style="display: none;">Loading model...</span>
-                        <pre id="output"></pre>            
+                        <pre id="output"></pre>  
+                        <div id="model-buttons"></div>          
                     </div>
                 </li>
                 <li class="panel">Content for category 2</li>
@@ -85,7 +93,7 @@
 
     <script type="module" src="/src/entry-client.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     // Selecteer alle categorie-items en term-secties
     const asideItems = document.querySelectorAll(".category");
     const contentSections = document.querySelectorAll(".terms > li");
@@ -103,8 +111,18 @@
             let targetIndex;
             if (item.id === "category-1" || item.id === "category-2") {
                 targetIndex = 0; // Eerste panel
-                // Verberg de model select voor category-1, toon het voor category-2
-                document.getElementById("model-select").style.display = item.id === "category-1" ? "none" : "block";
+                // Verberg de model select voor categorie 1 en 2
+                document.getElementById("model-select").style.display = "none";
+                // Toon de model buttons alleen voor categorie 2
+                document.getElementById("model-buttons").style.display = item.id === "category-2" ? "block" : "none";
+                // Verberg de uploadButton en record alleen voor categorie 2
+                document.getElementById("uploadButton").style.display = item.id === "category-2" ? "none" : "block";
+                document.getElementById("record").style.display = item.id === "category-2" ? "none" : "block";
+
+                // Toon cat-1 in categorie 1 en verberg in categorie 2
+                document.getElementById("cat-1").style.display = item.id === "category-1" ? "block" : "none";
+                // Toon cat-2 in categorie 2 en verberg in categorie 1
+                document.getElementById("cat-2").style.display = item.id === "category-2" ? "block" : "none";
             } else if (item.id === "category-3") {
                 targetIndex = 2; // Derde panel
             } else if (item.id === "category-4") {
@@ -130,20 +148,3 @@
 </body>
 </html>
 
-
-
-
-
-
-    <!-- <nav>
-        <ul>
-            <li><strong>Transcriber</strong></li>
-        </ul>
-        <ul>
-            <li><a href="/" class="secondary">
-                Refresh
-            </a></li>
-        </ul>
-    </nav> -->
-
-  

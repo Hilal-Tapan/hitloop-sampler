@@ -5,7 +5,7 @@ import RecordPlugin from 'wavesurfer.js/dist/plugins/record.js'
 
 import {pipeline, env} from '@xenova/transformers'
 
-let wavesurfer, record
+let wavesurfer, record, wavUrl; // Define wavUrl here
 let scrollingWaveform = true
 env.allowLocalModels = false
 env.allowRemoteModels = true
@@ -45,7 +45,7 @@ const createWaveSurfer = async () => {
         return blobWithWavHeader;
     }
 
-// Extend the AudioContext prototype to create a WAV Blob
+    // Extend the AudioContext prototype to create a WAV Blob
     AudioContext.prototype.createWAVBlob = function (audioBuffer) {
         return new Promise((resolve) => {
             const audioData = audioBuffer.getChannelData(0);
@@ -81,7 +81,6 @@ const createWaveSurfer = async () => {
         });
     };
 
-
     // Create an instance of WaveSurfer
     if (wavesurfer) {
         wavesurfer.destroy()
@@ -112,14 +111,6 @@ const createWaveSurfer = async () => {
             url: recordedUrl,
         })
 
-        // Play button
-        // const button = container.appendChild(document.createElement('button'))
-        // button.textContent = 'Play'
-        // button.onclick = () => wavesurfer.playPause()
-        // wavesurfer.on('pause', () => (button.textContent = 'Play'))
-        // wavesurfer.on('play', () => (button.textContent = 'Pause'))
-
-
         const modelSelect = document.createElement('select');
         modelSelect.id = 'model-select';
         modelSelect.name = 'model-select';
@@ -139,10 +130,9 @@ const createWaveSurfer = async () => {
         link.innerHTML = '<img src="images/play-button.svg" alt="Play Recording">';
         link.classList.add('play-button');
 
-
         let data = new FormData();
         let convertedBlob = await convertBlob(blob);
-        let wavUrl = URL.createObjectURL(convertedBlob);
+        wavUrl = URL.createObjectURL(convertedBlob); // Assign wavUrl here
         data.append('file', convertedBlob);
 
         link.addEventListener('click', async (e) => {
@@ -167,15 +157,31 @@ const createWaveSurfer = async () => {
                 const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
                 const result = await transcriber(wavUrl);
                 console.log(result)
-                // wavesurfer.playpause  als ik de andere modellen ook wil laten afspelen en genereren
-                // wavesurfer.playPause()
                 document.getElementById("output").innerText += `Whisper-${model}: ${result.text} \n`
             }
 
             document.getElementById("spinner").style.display = 'none';
         });
     })
-    // pauseButton.style.display = 'none'
+
+    // Add this code snippet where you want to create the buttons for each model
+    const modelButtonsContainer = document.querySelector('#model-buttons');
+
+    ['tiny', 'base', 'small', 'medium'].forEach(model => {
+        const button = document.createElement('button');
+        button.textContent = `Whisper ${model.charAt(0).toUpperCase() + model.slice(1)}`;
+        button.addEventListener('click', async () => {
+            document.getElementById("spinner").style.display = 'block';
+
+            const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
+            const result = await transcriber(wavUrl);
+            console.log(result);
+            document.getElementById("output").innerText += `Whisper-${model}: ${result.text} \n`;
+
+            document.getElementById("spinner").style.display = 'none';
+        });
+        modelButtonsContainer.appendChild(button);
+    });
 }
 
 // const pauseButton = document.querySelector('#pause')
@@ -229,6 +235,7 @@ recButton.onclick = () => {
 }
 
 createWaveSurfer()
+
 
 
 // import '@picocss/pico';
