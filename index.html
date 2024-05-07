@@ -45,8 +45,8 @@
                                 <h3>Ontdek of AI spraakherkenning jou ook discrimineert</h3>
                             </div>
                             <div id="cat-2">
-                                <h2>Vergelijk de resultaten van anderen</h2>
-                                <h3>Kom erachter of anderen hetzelfde probleem ervaren</h3>
+                                <h2>Vergelijk de verschillende ASR modellen</h2>
+                                <h3>En ontdek welk model het beste werkt</h3>
                             </div>
 
                             <select id="mic-select" style="display: none">
@@ -94,6 +94,7 @@
     <script type="module" src="/src/entry-client.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOMContentLoaded event fired");
     // Selecteer alle categorie-items en term-secties
     const asideItems = document.querySelectorAll(".category");
     const contentSections = document.querySelectorAll(".terms > li");
@@ -102,6 +103,8 @@
     asideItems.forEach((item, index) => {
         // Voeg een klikgebeurtenis toe aan elk categorie-item
         item.addEventListener("click", function () {
+            console.log("Category item clicked");
+
             // Verwijder de "active" klasse van alle term-secties
             contentSections.forEach(section => {
                 section.classList.remove("active");
@@ -114,7 +117,7 @@
                 // Verberg de model select voor categorie 1 en 2
                 document.getElementById("model-select").style.display = "none";
                 // Toon de model buttons alleen voor categorie 2
-                document.getElementById("model-buttons").style.display = item.id === "category-2" ? "block" : "none";
+                document.getElementById("model-buttons").style.display = item.id === "category-2" ? "flex" : "none";
                 // Verberg de uploadButton en record alleen voor categorie 2
                 document.getElementById("uploadButton").style.display = item.id === "category-2" ? "none" : "block";
                 document.getElementById("record").style.display = item.id === "category-2" ? "none" : "block";
@@ -143,7 +146,29 @@
             }
         });
     });
+
+    // Model button event listeners
+    const modelButtons = document.querySelectorAll('#model-buttons button');
+    modelButtons.forEach(button => {
+    button.addEventListener('click', async () => {
+        console.log("Model button clicked");
+        // Remove 'active' class from all model buttons
+        modelButtons.forEach(btn => {
+            btn.classList.remove('active-model-button');
+        });
+
+        // Add 'active' class to clicked model button
+        button.classList.add('active-model-button');
+
+        // Disable the clicked model button
+        button.disabled = true;
+
+        // Your existing logic for handling model button clicks goes here
+    });
 });
+
+});
+
     </script>
 </body>
 </html>

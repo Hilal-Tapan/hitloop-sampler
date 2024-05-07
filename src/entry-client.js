@@ -169,7 +169,7 @@ const createWaveSurfer = async () => {
 
     ['tiny', 'base', 'small', 'medium'].forEach(model => {
         const button = document.createElement('button');
-        button.textContent = `Whisper ${model.charAt(0).toUpperCase() + model.slice(1)}`;
+        button.textContent = `${model.charAt(0).toUpperCase() + model.slice(1)}`;
         button.addEventListener('click', async () => {
             document.getElementById("spinner").style.display = 'block';
 
@@ -183,18 +183,6 @@ const createWaveSurfer = async () => {
         modelButtonsContainer.appendChild(button);
     });
 }
-
-// const pauseButton = document.querySelector('#pause')
-// pauseButton.onclick = () => {
-//     if (record.isPaused()) {
-//         record.resumeRecording()
-//         pauseButton.textContent = 'Pause'
-//         return
-//     }
-
-//     record.pauseRecording()
-//     pauseButton.textContent = 'Resume'
-// }
 
 const micSelect = document.querySelector('#mic-select')
 {
@@ -230,7 +218,6 @@ recButton.onclick = () => {
     record.startRecording({deviceId}).then(() => {
         recButton.innerHTML = '<img src="images/pause-button.svg" alt="Stop Recording">';
         recButton.disabled = false
-        // pauseButton.style.display = 'inline'
     })
 }
 
