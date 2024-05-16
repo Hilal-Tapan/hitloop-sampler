@@ -66,16 +66,59 @@
                         <div id="model-buttons"></div>          
                     </div>
                 </li>
+
                 <li class="panel">Content for category 2</li>
+
                 <li class="panel">
                     <div id="app" class="container">
                         <div id="control-container">
                             <h2>Vergelijk de resultaten van anderen</h2>
                             <h3>Kom erachter of anderen hetzelfde probleem ervaren</h3>
                         </div>
+                        <div>
+                            <ul class="vergelijk-anderen">
+                                <li id="persoon-1" data-mp3="audio/fn000098.mp3">
+                                    <img src="images/persoon.svg" alt="persoon 1">
+                                    <p>
+                                        Mijn opa heeft [] twintig duiven en [] geeft ze allemaal een naam. 
+                                        Ze wonen in een hok in de tuin en ze krijgen elke dag granen zaden 
+                                        en pulvruchten te eten. Die hebben ze nodig om voldoende energie te 
+                                        hebben en om de temperatuur van hun lichaam op de pijl te kunnen houden.
+                                    </p>
+                                </li>
+                                <li id="persoon-2" data-mp3="audio/fn000098.mp3">
+                                    <img src="images/persoon.svg" alt="persoon 2">
+                                    <p>
+                                        Mijn opa heeft wel twintig duiven hij geeft ze allemaal een naam. 
+                                        Ze wonen in een hoek in de town en ze krijgen elke dag granen zaden en 
+                                        leeuwvruchten te eten. Die hebben ze nodig om voldoende ernergie te 
+                                        hebben en om de temperatuur van hun lichaam om veel te kunnen houden.
+                                    </p>
+                                </li>
+                                <li id="persoon-3" data-mp3="audio/fn000098.mp3">
+                                    <img src="images/persoon.svg" alt="persoon 3">
+                                    <p>
+                                        Mijn opa heeft wel twintig duiven hij geeft ze allemaal een naam. 
+                                        Ze wonen in een hok in de tuin en ze krijgen elke dag granen zaden 
+                                        en peulvruchten te eten. Die hebben ze nodig om voldoende energie te 
+                                        hebben en om de temperatuur van hun lichaam op peil te kunnen houden.
+                                    </p>
+                                </li>
+                                <li id="persoon-4" data-mp3="audio/fn000098.mp3">
+                                    <img src="images/persoon.svg" alt="persoon 4">
+                                    <p>
+                                        Mijn opa heeft al twintig duiven hij geeft ze allemaal een naam ze wonen 
+                                        in een hok in de tuin en ze krijgen elke dag granen zaden en peelvruchting 
+                                        te eten die hebben ze nodig om voldoende energie te hebben en om de 
+                                        temperatuur van hun lichaam op beeld te kunnen houden
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                         <div class="sound-line"></div>          
                 </li>
+
                 <li class="panel">
                     <div id="app" class="container">
                         <div id="control-container">
@@ -85,7 +128,7 @@
                     </div>
                         <div class="sound-line"></div>   
                 </li>
-                <li class="panel">Content for category 5</li>
+                <li class="panel">For future purposes</li>
             </ul>
         </div>
     </div>
@@ -166,7 +209,42 @@
     });
 });
 
+// Select all li elements within .vergelijk-anderen
+const vergelijkAnderenItems = document.querySelectorAll(".vergelijk-anderen li");
+
+// Variable to store the currently playing audio
+let currentAudio;
+
+vergelijkAnderenItems.forEach(item => {
+    item.addEventListener("click", function () {
+        console.log("Vergelijk-Anderen item clicked");
+
+        // Pause the currently playing audio (if any)
+        if (currentAudio) {
+            currentAudio.pause();
+            console.log("Paused previous audio");
+        }
+
+        // Remove the 'active' class from all items
+        vergelijkAnderenItems.forEach(li => {
+            li.classList.remove("active");
+        });
+
+        // Add the 'active' class to the clicked item
+        item.classList.add("active");
+
+        // Play corresponding MP3 file
+        const audio = new Audio();
+        const mp3Path = item.dataset.mp3; // Retrieve MP3 path from data attribute
+        audio.src = mp3Path;
+        audio.play();
+
+        // Update the currentAudio variable with the new Audio object
+        currentAudio = audio;
+    });
 });
+
+    });
 
     </script>
 </body>
