@@ -273,6 +273,28 @@ vergelijkAnderenItems.forEach(item => {
     });
 });
 
+    // Carousel logic
+    const carousel = document.querySelector('.carousel');
+    const container = carousel.querySelector('.carousel-container');
+    const videos = container.querySelectorAll('.video');
+    const bullets = carousel.querySelectorAll('.bullet');
+
+    let currentIndex = 0;
+
+    function goToSlide(index) {
+        container.style.transform = `translateX(-${index * 100}%)`;
+        bullets.forEach((bullet, i) => {
+            bullet.classList.toggle('active', i === index);
+        });
+        currentIndex = index;
+    }
+
+    bullets.forEach((bullet, index) => {
+        bullet.addEventListener('click', () => {
+            goToSlide(index);
+        });
+    });
+     
     });
 
     </script>
