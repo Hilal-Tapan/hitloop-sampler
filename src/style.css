@@ -59,6 +59,9 @@ button > img {
     color: black;
 } */
 
+#spinner{
+    color: white;
+}
 
 /* aside ---------------------------------------------------------------------------------------------*/
 aside {
@@ -282,6 +285,8 @@ pre {
     font-family: var(--font);
     height: 100px;
     overflow-y: scroll;
+    margin: 0 auto; /* Add this line to center the text */
+
 }
 
 /* Style the scrollbar */
@@ -307,7 +312,7 @@ pre::-webkit-scrollbar-thumb {
 #record {
     position: absolute;
     bottom: 20px;
-    right: 32%;
+    right: 35%;
 }
 
 .play-button {
@@ -321,7 +326,7 @@ pre::-webkit-scrollbar-thumb {
 }
 
 #recordings button:nth-of-type(1) {
-    margin-right:30px;
+    margin-right:80px;
 }
 
 #recordings div:nth-of-type(1){
@@ -369,6 +374,7 @@ button:disabled {
     width: fit-content;
     z-index: 100;
     position: relative;
+    cursor: pointer;
 }
 
 .vergelijk-anderen li:hover:after{
@@ -436,6 +442,11 @@ button:disabled {
 
 .vergelijk-anderen li.active p {
     display: block;
+}
+
+.highlight {
+    color: red; /* Je kunt elke gewenste stijl toepassen */
+    font-weight: bold;
 }
 
 
