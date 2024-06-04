@@ -148,16 +148,16 @@ const createWaveSurfer = async () => {
                 }).then(response => response.json())
                     .then(data => {
                         wavesurfer.playPause()
-                        document.getElementById("output").innerText += `Whisper-large: ${data.text} \n`
+                        document.getElementById("output").innerHTML += `<div class="transcription-label">Large:</div><div class="transcription">${data.text}</div>`;
                     })
                     .catch((error) => {
                         console.error('Error:', error);
                     });
             } else {
-                const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
+                const transcriber = await pipeline('automatic-speech-recognition', `Xenova/${model}`);
                 const result = await transcriber(wavUrl);
                 console.log(result)
-                document.getElementById("output").innerText += `Whisper-${model}: ${result.text} \n`
+                document.getElementById("output").innerText += `${model}: ${result.text} \n`
             }
 
             document.getElementById("spinner").style.display = 'none';
@@ -167,22 +167,22 @@ const createWaveSurfer = async () => {
     // Add this code snippet where you want to create the buttons for each model
     const modelButtonsContainer = document.querySelector('#model-buttons');
 
-    ['tiny', 'base', 'small', 'medium'].forEach(model => {
+    ['Tiny', 'Base', 'Small', 'Medium'].forEach(model => {
         const button = document.createElement('button');
         button.textContent = `${model.charAt(0).toUpperCase() + model.slice(1)}`;
         button.addEventListener('click', async () => {
             document.getElementById("spinner").style.display = 'block';
-
+    
             const transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
             const result = await transcriber(wavUrl);
             console.log(result);
-            document.getElementById("output").innerText += `Whisper-${model}: ${result.text} \n`;
-
+            document.getElementById("output").innerHTML += `<div class="transcription-label">${model}:</div><div class="transcription">${result.text}</div>`;
+    
             document.getElementById("spinner").style.display = 'none';
         });
         modelButtonsContainer.appendChild(button);
     });
-}
+}    
 
 const micSelect = document.querySelector('#mic-select')
 {

@@ -215,7 +215,7 @@ aside > ol > li:nth-of-type(2).active::after, aside > ol > li:nth-of-type(4).act
     display: none;
 }
 
-.terms li.active {
+.terms > li.active {
     display: block;
 }
 
@@ -283,9 +283,9 @@ pre {
     white-space: pre-wrap;
     font-size: 22px;
     font-family: var(--font);
-    height: 100px;
+    height: 120px;
     overflow-y: scroll;
-    margin: 0 auto; /* Add this line to center the text */
+    margin: 0 auto; 
 
 }
 
@@ -302,6 +302,18 @@ pre::-webkit-scrollbar-track {
 pre::-webkit-scrollbar-thumb {
     background: var(--titel-background); 
     border-radius: 5px;
+}
+
+
+/* transcription --------------------------------------------------------------------------------------------- */
+.transcription-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-top: 10px; 
+
+}
+
+.transcription {
 }
 
 /* record --------------------------------------------------------------------------------------------- */
@@ -340,7 +352,7 @@ pre::-webkit-scrollbar-thumb {
 /* Second interaction --------------------------------------------------------------------------------------------- */
 #model-buttons {
     padding: 0 50px;
-    margin-top: 60px;
+    margin-top: 40px;
     justify-content: space-between;
 }
 
@@ -364,44 +376,51 @@ button:disabled {
 
 /* Third interaction --------------------------------------------------------------------------------------------- */
 .vergelijk-anderen {
-    padding: 0 100px;
+    padding: 0 50px;
     display: flex;
     justify-content: space-between;
 }
 
 .vergelijk-anderen li{
-    display: block;
+    display: flex;
     width: fit-content;
     z-index: 100;
     position: relative;
-    cursor: pointer;
+    cursor: pointer;  
+    font-size: 10px;
+    color: white;  
+    /* display: flex; */
+    flex-direction: column;
+    text-align: center;
 }
 
-.vergelijk-anderen li:hover:after{
+/* .vergelijk-anderen li:hover:after{
     background-color:var(--aside);
     color: var(--font-light);
     position: absolute;
-    font-size: 10px;
     width:max-content;
     padding: 2px 5px;
     border-radius: 7px;
     bottom: -30px;
     transform: translateX(-90%);
-    /* scale: .7; */
-}
+    scale: .7;
+} */
 
-.vergelijk-anderen li:nth-of-type(1):hover:after {
+.vergelijk-anderen li:nth-of-type(1)::after {
     content:"13 jaar, jongen, Gelderland";
 }
-.vergelijk-anderen li:nth-of-type(2):hover:after {
+.vergelijk-anderen li:nth-of-type(2)::after {
     content:"16 jaar, meisje, Irak";
-    transform: translateX(-110%);
+    /* transform: translateX(-110%); */
 }
-.vergelijk-anderen li:nth-of-type(3):hover:after {
+.vergelijk-anderen li:nth-of-type(3)::after {
     content:"13 jaar, jongen, Noord-Brabant";
+    width: 70%;
 }
-.vergelijk-anderen li:nth-of-type(4):hover:after {
+.vergelijk-anderen li:nth-of-type(4)::after {
     content:"16 jaar, jongen, West Vlaanderen";
+    width: 70%;
+    
 }
 
 .vergelijk-anderen li.active {
@@ -419,8 +438,8 @@ button:disabled {
 .vergelijk-anderen li p {
     display: none;
     position: absolute;
-    top: 150%; 
-    left: 70%;
+    top: 120%; 
+    left: 90%;
     /* transform: translateX(-50%); */
     width: 400px; 
     text-align: center;
@@ -429,15 +448,15 @@ button:disabled {
 }
 
 .vergelijk-anderen li:nth-of-type(2) p {
-    left: -50%;
+    left: -35%;
 }
 
 .vergelijk-anderen li:nth-of-type(3) p {
-    left: -170%;
+    left: -129%;
 }
 
 .vergelijk-anderen li:nth-of-type(4) p {
-    left: -290%;
+    left: -230%;
 }
 
 .vergelijk-anderen li.active p {
@@ -445,8 +464,10 @@ button:disabled {
 }
 
 .highlight {
-    color: red; /* Je kunt elke gewenste stijl toepassen */
-    font-weight: bold;
+    color: white; 
+    padding: 0 2px;
+    background-color:var(--aside);
+    /* font-weight: bold; */
 }
 
 
@@ -487,4 +508,12 @@ button:disabled {
 }
 .bullet.active {
     background-color: #333;
+}
+
+::cue {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff; 
+    font-size: 16px;
+    font-family: Arial, sans-serif; 
+    text-align: center; 
 }
