@@ -20,15 +20,6 @@ An interactive dashboard that can be used by employees and practice partners of 
 
 ***
 
-## 🛠️ Used Technologies 🛠️
-* HTML5
-* CSS3
-* JavaScript
-* Web Api
-* External Api
-
-***
-
 ## 🔎 Features 🔎
 1. **The user can make a recording**
 which is then transcribed using AI, without correction. This allows the user to discover the mistakes made by this AI. For this I will use the AI ​​model Whisper-Large-v2, which is one of the better models.
@@ -41,6 +32,15 @@ For this I will use a dataset with users who all speak the same piece of text. T
 
 4. **The user can watch a video with uncorrected transcription.** 
 Normally this is corrected, but I will apply this without correction which will allow the user to see how many mistakes AI makes for different speakers.
+
+***
+
+## 🛠️ Used Technologies 🛠️
+* HTML5
+* CSS3
+* JavaScript
+* Web Api
+* External Api
 
 ***
 
