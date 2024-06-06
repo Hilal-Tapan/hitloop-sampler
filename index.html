@@ -32,8 +32,6 @@
                 </ol>
             </aside>
         </div>
-
-        <!-- zelfde content gebruiken in tweede page -->
         
         <div id="app" class="container">
             <ul class="terms">
@@ -129,7 +127,6 @@
                             <h2>Bekijk de transcriptie uit de video’s</h2>
                             <h3>Ontdek hoe AI discrimineert bij automatische transcriptie</h3>
                         </div>
-<!-- new code -->
                         <div class="carousel">
                             <div class="carousel-container">
                                 <div class="video">
@@ -160,7 +157,6 @@
                                 <span class="bullet"></span>
                             </div>
                         </div>
-<!-- new code -->
                     </div>
                         <div class="sound-line"></div>   
                 </li>
@@ -171,153 +167,151 @@
 
     <script type="module" src="/src/entry-client.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            console.log("DOMContentLoaded event fired");
-            
-            // Ensure captions are enabled only when the video starts playing
-            const videos = document.querySelectorAll('video');
-            videos.forEach(video => {
-                video.addEventListener('play', () => {
-                    const tracks = video.textTracks;
-                    for (let i = 0; i < tracks.length; i++) {
-                        tracks[i].mode = 'showing';
-                    }
-                });
-            });
-        
-            // Selecteer alle categorie-items en term-secties
-            const asideItems = document.querySelectorAll(".category");
-            const contentSections = document.querySelectorAll(".terms > li");
-        
-            // Itereer over alle categorie-items
-            asideItems.forEach((item, index) => {
-                // Voeg een klikgebeurtenis toe aan elk categorie-item
-                item.addEventListener("click", function () {
-                    console.log("Category item clicked");
-        
-                    // Verwijder de "active" klasse van alle term-secties
-                    contentSections.forEach(section => {
-                        section.classList.remove("active");
-                    });
-        
-                    // Bepaal de doelindex op basis van het id van het geklikte item
-                    let targetIndex;
-                    if (item.id === "category-1" || item.id === "category-2") {
-                        targetIndex = 0; // Eerste panel
-                        // Verberg de model select voor categorie 1 en 2
-                        document.getElementById("model-select").style.display = "none";
-                        // Toon de model buttons alleen voor categorie 2
-                        document.getElementById("model-buttons").style.display = item.id === "category-2" ? "flex" : "none";
-                        // Verberg de uploadButton en record alleen voor categorie 2
-                        document.getElementById("uploadButton").style.display = item.id === "category-2" ? "none" : "block";
-                        document.getElementById("record").style.display = item.id === "category-2" ? "none" : "block";
-        
-                        // Toon cat-1 in categorie 1 en verberg in categorie 2
-                        document.getElementById("cat-1").style.display = item.id === "category-1" ? "block" : "none";
-                        // Toon cat-2 in categorie 2 en verberg in categorie 1
-                        document.getElementById("cat-2").style.display = item.id === "category-2" ? "block" : "none";
-                    } else if (item.id === "category-3") {
-                        targetIndex = 2; // Derde panel
-                    } else if (item.id === "category-4") {
-                        targetIndex = 3; // Vierde panel
-                    } else if (item.id === "category-5") {
-                        targetIndex = 4; // Vijfde panel
-                    }
-        
-                    // Voeg de "active" klasse toe aan de term-sectie op basis van de doelindex
-                    contentSections[targetIndex].classList.add("active");
-        
-                    // Controleer de schermgrootte en pas de "active" klasse toe op het geklikte categorie-item indien nodig
-                    if (window.innerWidth > 400) {
-                        asideItems.forEach(category => {
-                            category.classList.remove("active");
-                        });
-                        item.classList.add("active");
-                    }
-                });
-            });
-        
-            // Model button event listeners
-            const modelButtons = document.querySelectorAll('#model-buttons button');
-            modelButtons.forEach(button => {
-                button.addEventListener('click', async () => {
-                    console.log("Model button clicked");
-                    // Remove 'active' class from all model buttons
-                    modelButtons.forEach(btn => {
-                        btn.classList.remove('active-model-button');
-                    });
-        
-                    // Add 'active' class to clicked model button
-                    button.classList.add('active-model-button');
-        
-                    // Disable the clicked model button
-                    button.disabled = true;
-        
-                    // Your existing logic for handling model button clicks goes here
-                });
-            });
-        
-            // Select all li elements within .vergelijk-anderen
-            const vergelijkAnderenItems = document.querySelectorAll(".vergelijk-anderen li");
-        
-            // Variable to store the currently playing audio
-            let currentAudio;
-        
-            vergelijkAnderenItems.forEach(item => {
-                item.addEventListener("click", function () {
-                    console.log("Vergelijk-Anderen item clicked");
-        
-                    // Pause the currently playing audio (if any)
-                    if (currentAudio) {
-                        currentAudio.pause();
-                        console.log("Paused previous audio");
-                    }
-        
-                    // Remove the 'active' class from all items
-                    vergelijkAnderenItems.forEach(li => {
-                        li.classList.remove("active");
-                    });
-        
-                    // Add the 'active' class to the clicked item
-                    item.classList.add("active");
-        
-                    // Play corresponding MP3 file
-                    const audio = new Audio();
-                    const mp3Path = item.dataset.mp3; // Retrieve MP3 path from data attribute
-                    audio.src = mp3Path;
-                    audio.play();
-        
-                    // Update the currentAudio variable with the new Audio object
-                    currentAudio = audio;
-                });
-            });
-        
-            // Carousel logic
-            const carousel = document.querySelector('.carousel');
-            const container = carousel.querySelector('.carousel-container');
-            const videoElements = container.querySelectorAll('.video');
-            const bullets = carousel.querySelectorAll('.bullet');
-        
-            let currentIndex = 0;
-        
-            function goToSlide(index) {
-                container.style.transform = `translateX(-${index * 100}%)`;
-                bullets.forEach((bullet, i) => {
-                    bullet.classList.toggle('active', i === index);
-                });
-                currentIndex = index;
+    document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOMContentLoaded event fired");
+
+    // Zorg ervoor dat ondertitels alleen worden ingeschakeld wanneer de video begint af te spelen
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+        video.addEventListener('play', () => {
+            const tracks = video.textTracks;
+            for (let i = 0; i < tracks.length; i++) {
+                tracks[i].mode = 'showing';  // Toon ondertitels
             }
-        
-            bullets.forEach((bullet, index) => {
-                bullet.addEventListener('click', () => {
-                    goToSlide(index);
-                });
-            });
-        
-            // Initialize the first slide as active
-            goToSlide(0);
         });
-        </script>
+    });
+
+    // Selecteer alle categorie-items en term-secties
+    const asideItems = document.querySelectorAll(".category");
+    const contentSections = document.querySelectorAll(".terms > li");
+
+    // Doorloop alle categorie-items
+    asideItems.forEach((item, index) => {
+        // Voeg een klikgebeurtenis toe aan elk categorie-item
+        item.addEventListener("click", function () {
+            console.log("Category item clicked");
+
+            // Verwijder de "active" klasse van alle term-secties
+            contentSections.forEach(section => {
+                section.classList.remove("active");
+            });
+
+            // Bepaal de doelindex op basis van het id van het aangeklikte item
+            let targetIndex;
+            if (item.id === "category-1" || item.id === "category-2") {
+                targetIndex = 0;  // Eerste paneel
+                // Verberg de model select voor categorie 1 en 2
+                document.getElementById("model-select").style.display = "none";
+                // Toon de model knoppen alleen voor categorie 2
+                document.getElementById("model-buttons").style.display = item.id === "category-2" ? "flex" : "none";
+                // Verberg de uploadButton en opnameknop alleen voor categorie 2
+                document.getElementById("uploadButton").style.display = item.id === "category-2" ? "none" : "block";
+                document.getElementById("record").style.display = item.id === "category-2" ? "none" : "block";
+
+                // Toon cat-1 in categorie 1 en verberg in categorie 2
+                document.getElementById("cat-1").style.display = item.id === "category-1" ? "block" : "none";
+                // Toon cat-2 in categorie 2 en verberg in categorie 1
+                document.getElementById("cat-2").style.display = item.id === "category-2" ? "block" : "none";
+            } else if (item.id === "category-3") {
+                targetIndex = 2;  // Derde paneel
+            } else if (item.id === "category-4") {
+                targetIndex = 3;  // Vierde paneel
+            } else if (item.id === "category-5") {
+                targetIndex = 4;  // Vijfde paneel
+            }
+
+            // Voeg de "active" klasse toe aan de term-sectie op basis van de doelindex
+            contentSections[targetIndex].classList.add("active");
+
+            // Controleer de schermgrootte en pas de "active" klasse toe op het aangeklikte categorie-item indien nodig
+            if (window.innerWidth > 400) {
+                asideItems.forEach(category => {
+                    category.classList.remove("active");
+                });
+                item.classList.add("active");
+            }
+        });
+    });
+
+    // Event listeners voor model knoppen
+    const modelButtons = document.querySelectorAll('#model-buttons button');
+    modelButtons.forEach(button => {
+        button.addEventListener('click', async () => {
+            console.log("Model button clicked");
+            // Verwijder de 'active' klasse van alle model knoppen
+            modelButtons.forEach(btn => {
+                btn.classList.remove('active-model-button');
+            });
+
+            // Voeg de 'active' klasse toe aan de aangeklikte model knop
+            button.classList.add('active-model-button');
+
+            // Schakel de aangeklikte model knop uit
+            button.disabled = true;
+        });
+    });
+
+    // Selecteer alle li-elementen binnen .vergelijk-anderen
+    const vergelijkAnderenItems = document.querySelectorAll(".vergelijk-anderen li");
+
+    // Variabele om de momenteel afspelende audio op te slaan
+    let currentAudio;
+
+    vergelijkAnderenItems.forEach(item => {
+        item.addEventListener("click", function () {
+            console.log("Vergelijk-Anderen item clicked");
+
+            // Pauzeer de momenteel afspelende audio (indien aanwezig)
+            if (currentAudio) {
+                currentAudio.pause();
+                console.log("Paused previous audio");
+            }
+
+            // Verwijder de 'active' klasse van alle items
+            vergelijkAnderenItems.forEach(li => {
+                li.classList.remove("active");
+            });
+
+            // Voeg de 'active' klasse toe aan het aangeklikte item
+            item.classList.add("active");
+
+            // Speel het bijbehorende MP3-bestand af
+            const audio = new Audio();
+            const mp3Path = item.dataset.mp3;  // Haal het MP3-pad op uit het data-attribuut
+            audio.src = mp3Path;
+            audio.play();
+
+            // Werk de currentAudio variabele bij met het nieuwe Audio object
+            currentAudio = audio;
+        });
+    });
+
+    // Logica voor de carrousel
+    const carousel = document.querySelector('.carousel');
+    const container = carousel.querySelector('.carousel-container');
+    const videoElements = container.querySelectorAll('.video');
+    const bullets = carousel.querySelectorAll('.bullet');
+
+    let currentIndex = 0;
+
+    function goToSlide(index) {
+        container.style.transform = `translateX(-${index * 100}%)`;
+        bullets.forEach((bullet, i) => {
+            bullet.classList.toggle('active', i === index);
+        });
+        currentIndex = index;
+    }
+
+    bullets.forEach((bullet, index) => {
+        bullet.addEventListener('click', () => {
+            goToSlide(index);
+        });
+    });
+
+    // Initialiseer de eerste slide als actief
+    goToSlide(0);
+});
+</script>
         
 </body>
 </html>

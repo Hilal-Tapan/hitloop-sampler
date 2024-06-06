@@ -21,7 +21,7 @@ An interactive dashboard that can be used by employees and practice partners of 
 ***
 
 ## 🔎 Features 🔎
-1. **The user can make a recording**
+1. **The user can make a recording.**
 which is then transcribed using AI, without correction. This allows the user to discover the mistakes made by this AI. For this I will use the AI ​​model Whisper-Large-v2, which is one of the better models.
 
 2. **The user can compare different AI models with each other.**
