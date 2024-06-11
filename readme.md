@@ -45,7 +45,7 @@ Normally this is corrected, but I will apply this without correction which will 
 ***
 
 ## 📄  License 📄 
--
+This project has a MIT License - see the license file for more details.
 
 ***
 
